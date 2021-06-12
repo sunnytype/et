@@ -1,0 +1,33 @@
+<html lang="en">
+<body xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:fragment="table">
+    <div id="table-content">
+        <div th:each="sheet, sheetIt: ${book?.sheets}"
+             style="border: 1px solid transparent; margin: 0 0 20px 0;">
+            <div>
+                <h1 th:text="${(((sheetIt.index > 0) && (sheetIt.index < book.sheets.size - 1)) ? (sheetIt.index + '. ') : '') + sheet.name}"
+                    style="color: #111111; border-bottom: 0px solid #111111; font-size: 13px; display: inline-block; font-weight: bold; padding: 5px 0; margin: 0;"></h1>
+            </div>
+            <div style="overflow-x: auto; margin: 20px 0 0 0;">
+                <table style="float: left; border-collapse: collapse; border-spacing: 0; display: inline-block; width: auto; margin: 0;">
+                    <tr th:each="row, rowIt: ${sheet.rows}">
+                        <td th:each="cell, cellIt: ${row.cells}"
+                            th:classappend="${(row.head ? 'head' : '') + (cell.merged ? 'merged' : '')}"
+                            th:attr="rowspan=${cell.rowSpan}, colspan=${cell.colSpan}"
+                            th:style="|background-color:#${cell.style.fillColor}; padding: 5px 5px; text-align: ${cell.style.textAlign}; vertical-align: ${cell.style.verticalAlign}; border-left: ${cell.style.borderLeft.css}; border-right: ${cell.style.borderRight.css}; border-top: ${cell.style.borderTop.css}; border-bottom: ${cell.style.borderBottom.css};|"
+                            nowrap="nowrap">
+                            <a th:attr="href=${cell.linkLocation}"
+                               th:remove="${cell.link} ? 'none' : 'tag'"
+                               th:style="|display: block;|"
+                               target="_blank">
+                                <div th:utext="${cell.value}"
+                                     th:style="|color:#${cell.style.fontColor}; line-height: 20px; font-size: 13px; font-weight: ${cell.style.fontWeight};|"></div>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                <div style="display: block; clear: both; border-top: 1px solid transparent; height: 0;"></div>
+            </div>
+        </div>
+    </div>
+</div>
