@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ET</title>
+    <style>
+        *:focus {
+            outline: none;
+        }
+
+        textarea {
+            resize: none;
+        }
+    </style>
+</head>
+<body xmlns:th="http://www.w3.org/1999/xhtml" style="max-width: 800px; margin: 0 auto; padding: 20px 0;">
+<div style="">
+    <form id="display-form"
+          method="POST"
+          action="/excel/display"
+          enctype="multipart/form-data"
+          style="display: inline-block; float: left;">
+        <input type="text"
+               name="view"
+               placeholder="File Name"
+               th:value="${view}"
+               style="display: inline-block; float: left; border: 1px solid #9d9d9d; border-radius: 1px; background-color: #ffffff; height: 14px; padding: 6px 6px; margin: 0 6px 0 0;"/>
+        <div style="display: inline-block; position: relative; float: left; overflow: hidden; margin-right: 6px;">
+            <span style="display: inline-block; float: left; border: 1px solid #9d9d9d; border-radius: 1px; background-color: #f3f3f3; line-height: 14px; padding: 6px 6px;">Open File</span>
+            <input type="file"
+                   name="file"
+                   onchange="displayPost()"
+                   style="display: inline-block; position: absolute; left: 0; right: 0; top: 0; bottom: 0; opacity: 0;"/>
+        </div>
+        <label style="display: inline-block; float: left; border: 1px solid #9d9d9d; border-radius: 1px; background-color: #f3f3f3; padding: 6px 6px; margin: 0 6px 0 0;">
+            <input id="text-view-cb"
+                   type="checkbox"
+                   name="textmode"
+                   onchange="displayPost()"
+                   th:checked="${textmode}"
+                   style="display: inline-block; float: left; height: 14px; padding: 0; margin: 0 6px 0 0;">
+            <span style="display: inline-block; float: left; line-height: 14px;">Text Mode</span>
+        </label>
+        <input type="submit" value="Submit" style="display: none"/>
+    </form>
+    <input onclick="copyContentToClipboard()"
+           type="button"
+           value="Copy Content"
+           style="display: inline-block; float: left; border: 1px solid #9d9d9d; border-radius: 1px; background-color: #f3f3f3; line-height: 14px; padding: 6px 6px; margin-right: 6px;"/>
+    <div style="display: block; clear: both; border-top: 1px solid transparent; height: 0;"></div>
+</div>
+<br>
+<div id="content">
+    <div th:if="${!textmode}">
+        <div th:replace="excel/table::table(book = ${book})"></div>
+    </div>
+    <div th:if="${textmode}">
+        <div th:replace="excel/textview::textview(text = ${text})"></div>
+    </div>
+</div>
+</body>
+<script>
+    function displayPost() {
+        document.getElementById("display-form").submit();
+    }
+
+    function copyToClipboard(str) {
+        var ta = document.createElement('textarea');
+        ta.value = str;
+        ta.style.position = 'absolute';
+        ta.style.zIndex = '-1';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+    }
+
+    function copyTableToClipboard() {
+        var el = document.getElementById('table-content');
+        if (el) {
+            var content = el.innerHTML;
+            copyToClipboard(content);
+        }
+    }
+
+    function copyTextToClipboard() {
+        var el = document.getElementById('text-content');
+        if (el) {
+            var content = el.value;
+            copyToClipboard(content);
+        }
+    }
+
+    function isTextMode() {
+        var textMode = false;
+        var textViewCb = document.getElementById('text-view-cb');
+        if (textViewCb) {
+            if (textViewCb.checked) {
+                textMode = true;
+            }
+        }
+        return textMode;
+    }
+
+    function copyContentToClipboard() {
+        if (isTextMode()) {
+            copyTextToClipboard();
+        } else {
+            copyTableToClipboard();
+        }
+    }
+
+    function autoHeight(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            var scrollHeight = el.scrollHeight;
+            el.style.height = scrollHeight + 'px';
+        }
+    }
+
+    window.onload = function () {
+        autoHeight('text-content');
+    }
+</script>
+</html>
