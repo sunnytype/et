@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 
@@ -45,7 +47,7 @@ public class ExcelDisplayController {
                               @RequestParam("textmode") Optional<Boolean> textmode,
                               @RequestParam("view") Optional<String> view,
                               @RequestParam("file") MultipartFile uploadFile) {
-        String viewFile = "";
+        String viewFileName = "";
 
         String fileName = uploadFile.getOriginalFilename();
         if (fileName != null && !fileName.isBlank()) {
@@ -61,17 +63,19 @@ public class ExcelDisplayController {
                 System.out.println(fileError.getMessage());
             }
 
-            viewFile = fileName;
+            viewFileName = fileName;
         }
 
-        if (viewFile.isBlank()) {
-            viewFile = view.orElse("");
+        if (viewFileName.isBlank()) {
+            viewFileName = view.orElse("");
         }
+
+        viewFileName = URLEncoder.encode(viewFileName, StandardCharsets.UTF_8);
 
         boolean isTextmode = textmode.orElse(false);
         String textmodeParam = isTextmode ? "textmode=true" : "";
 
-        return String.format("redirect:/excel/display?file=%s&%s", viewFile, textmodeParam);
+        return String.format("redirect:/excel/display?file=%s&%s", viewFileName, textmodeParam);
     }
 
 }

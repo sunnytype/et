@@ -22,11 +22,13 @@
           style="display: inline-block; float: left;">
         <input type="text"
                name="view"
-               placeholder="File Name"
+               placeholder="Excel File Name"
                th:value="${view}"
-               style="display: inline-block; float: left; border: 1px solid #9d9d9d; border-radius: 1px; background-color: #ffffff; height: 14px; padding: 6px 6px; margin: 0 6px 0 0;"/>
+               style="display: inline-block; float: left; border: 1px solid #9d9d9d; border-radius: 1px; background-color: #ffffff; height: 14px; padding: 6px 6px; margin: 0 6px 0 0;"
+               readonly="readonly"
+        />
         <div style="display: inline-block; position: relative; float: left; overflow: hidden; margin-right: 6px;">
-            <span style="display: inline-block; float: left; border: 1px solid #9d9d9d; border-radius: 1px; background-color: #f3f3f3; line-height: 14px; padding: 6px 6px;">Open File</span>
+            <span style="display: inline-block; float: left; border: 1px solid #9d9d9d; border-radius: 1px; background-color: #f3f3f3; line-height: 14px; padding: 6px 6px;">Open Excel File</span>
             <input type="file"
                    name="file"
                    onchange="displayPost()"
@@ -43,10 +45,10 @@
         </label>
         <input type="submit" value="Submit" style="display: none"/>
     </form>
-    <input onclick="copyContentToClipboard()"
-           type="button"
-           value="Copy Content"
-           style="display: inline-block; float: left; border: 1px solid #9d9d9d; border-radius: 1px; background-color: #f3f3f3; line-height: 14px; padding: 6px 6px; margin-right: 6px;"/>
+    <button onclick="copyContentToClipboard()"
+            type="button"
+            style="display: inline-block; float: left; border: 1px solid #9d9d9d; border-radius: 1px; background-color: #f3f3f3; line-height: 14px; padding: 6px 6px; margin-right: 6px;"
+    >Copy Content</button>
     <div style="display: block; clear: both; border-top: 1px solid transparent; height: 0;"></div>
 </div>
 <br>
