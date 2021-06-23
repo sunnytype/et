@@ -2,7 +2,7 @@
 
 Excel Table, a tool to display excel table on Web.
 
-![](https://oss.sunnymix.com/img/et/et-icon.png)
+![](https://oss.sunnytype.com/img/et/et-icon.png)
 
 Features:
 - [x] Display excel table
